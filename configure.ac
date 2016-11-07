@@ -1,0 +1,11 @@
+AC_PREREQ([2.64])
+AC_INIT(bin2cpp, 1.0, jared@lostsidedead.com)
+AC_CONFIG_HEADERS(config.h)
+AC_CANONICAL_SYSTEM
+AM_INIT_AUTOMAKE
+AC_PROG_CXX
+AC_PROG_CC
+AC_LANG_CPLUSPLUS
+
+
+AC_OUTPUT(Makefile src/Makefile)
