@@ -2,6 +2,10 @@
 
 Convert Binary file to C++ array
 
+You will need: autotools (autoconf, automake etc.)
+Clang or GCC version that supports C++11
+
+
 To compile run:
 
 
