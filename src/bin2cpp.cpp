@@ -80,7 +80,8 @@ int main(int argc, char **argv) {
     file.close();
     outfile << "0x0" << "};\n\n";
     outfile.close();
-    std::cout << "Variable name: " << filen << "\n";
+    std::cout << "Array Variable: " << filen << "\n";
+    std::cout << "Array Length Variable: " << filen << "_length\n";
     std::cout << "Outputed: " << filename << " and " << filename_ << "\n";
     return 0;
 }
