@@ -8,10 +8,9 @@ std::string convertFilename(const std::string &input) {
     ssize_t pos = fpath.rfind("/");
     std::string filename;
     std::string text;
-    if(pos != std::string::npos) {
-        filename = fpath.substr(pos+1, fpath.length()-pos);
-        text = filename;
-    } else
+    if(pos != std::string::npos)
+        text = fpath.substr(pos+1, fpath.length()-pos);
+    else
         text = input;
     
     std::string temp;
