@@ -6,7 +6,6 @@
 std::string convertFilename(const std::string &input) {
     std::string fpath=input;
     ssize_t pos = fpath.rfind("/");
-    std::string filename;
     std::string text;
     if(pos != std::string::npos)
         text = fpath.substr(pos+1, fpath.length()-pos);
