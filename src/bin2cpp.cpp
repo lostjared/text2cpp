@@ -23,10 +23,17 @@ std::string convertFilename(const std::string &input) {
 }
 
 int main(int argc, char **argv) {
-    if(argc != 3) {
-        std::cerr << "Error requires two arguments.\n" << argv[0] << " binarysource outputfile\n";
-        return 0;
+    if(argc != 4) {
+        std::cerr << "Error requires two arguments.\n" << argv[0] << " binarysource outputfile lang\nlang is either c or cpp\n";
+        exit(EXIT_FAILURE);
     }
+    std::string arg_x = argv[3];
+    
+    if(arg_x != "c" && arg_x != "cpp") {
+        std::cerr << "Invalid language selection please use either c or cpp\n";
+        exit(EXIT_FAILURE);
+    }
+    
     std::fstream file;
     file.open(argv[1], std::ios::in | std::ios::binary);
     if(!file.is_open()) {
@@ -35,7 +42,6 @@ int main(int argc, char **argv) {
     }
     std::string filename=argv[2];
     filename += ".h";
-    
     std::fstream outfile;
     outfile.open(filename, std::ios::out);
     if(!outfile.is_open()) {
@@ -46,13 +52,18 @@ int main(int argc, char **argv) {
     std::string filen = convertFilename(argv[1]);
     outfile << "#ifndef " << filen << "__H\n";
     outfile << "#define " << filen << "__H\n\n";
+    if(arg_x == "cpp")
+    outfile << "#ifdef __cplusplus\n\nextern \"C\" {\n\n";
     outfile << "extern unsigned char " << filen << "[];\n";
     outfile << "extern unsigned long " << filen << "_length;\n";
+    if(arg_x == "cpp")
+    outfile << "\n}\n\n#endif\n\n";
     outfile << "\n";
     outfile << "\n\n#endif\n";
     std::string filename_;
     filename_= argv[2];
-    filename_+= ".cpp";
+    filename_+= ".";
+    filename_+= arg_x;
     outfile.close();
     outfile.open(filename_, std::ios::out);
     if(!outfile.is_open()) {
