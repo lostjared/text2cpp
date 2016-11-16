@@ -1,6 +1,6 @@
 # bin2cpp
 
-Convert Binary file to C++ array to embed resources
+Convert Binary file to C or C++ array to embed resources
 
 You will need: autotools (autoconf, automake etc.)
 Clang or GCC version that supports C++11
