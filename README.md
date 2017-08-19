@@ -21,7 +21,7 @@ to use this program:
 
 $ bin2cpp sourcefile outputfilename language
 
-langauge option should be c or cpp
+langauge option should be c for C, cpp for C++, or cpp17 for C++17
 
 
 The Output filenames will have the source file extension be .c or .cpp, and the header file will have .h appended to it if you are using C++ you can use use memfile.hpp it will be installed to whatever prefix configure was configured for you can use this to manipulate the array similar to a
