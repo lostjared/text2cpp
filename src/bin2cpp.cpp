@@ -50,6 +50,53 @@ void outputCpp17(std::string &filename, std::fstream &file, std::string &filen, 
     std::cout << "Outputed: " << filename << "\n";
 }
 
+void outputCpp(std::string &filename, std::fstream &file, std::string &filen, std::fstream &outfile, std::string &arg_x, char **argv) {
+    outfile << "#ifndef " << filen << "__H\n";
+    outfile << "#define " << filen << "__H\n\n";
+    if(arg_x == "cpp")
+        outfile << "#ifdef __cplusplus\nextern \"C\" {\n#endif\n\n";
+    outfile << "extern unsigned char " << filen << "[];\n";
+    outfile << "extern unsigned long " << filen << "_length;\n\n";
+    if(arg_x == "cpp")
+        outfile << "#ifdef __cplusplus\n}\n#endif\n";
+    outfile << "\n";
+    outfile << "\n\n#endif\n";
+    std::string filename_;
+    filename_= argv[2];
+    filename_+= ".";
+    filename_+= arg_x;
+    outfile.close();
+    outfile.open(filename_, std::ios::out);
+    if(!outfile.is_open()) {
+        std::cerr << "could not open file: " << filename_ << "\n";
+        exit(0);
+    }
+    outfile << "#include\"" << filename << "\"\n\n";
+    file.seekg(0, std::ios::end);
+    size_t len = file.tellg();
+    file.seekg(0, std::ios::beg);
+    outfile << "\nunsigned long " << filen << "_length = 0x" << std::hex << len << ";\n\n";
+    outfile << "\nunsigned char " << filen << "[] = {\n";
+    unsigned long counter = 0;
+    
+    char buffer[1024];
+    while(!file.eof()) {
+        file.read((char*)buffer, 1024);
+        for(unsigned int i = 0; i < file.gcount(); ++i) {
+            outfile << "0x" << std::hex << (unsigned int)(unsigned char)buffer[i] << ", ";
+            ++counter;
+            if((counter%15) == 0) outfile << "\n";
+            
+        }
+    }
+    file.close();
+    outfile << "0x0" << "};\n\n";
+    outfile.close();
+    std::cout << "Array Variable: " << filen << "\n";
+    std::cout << "Array Length Variable: " << filen << "_length\n";
+    std::cout << "Outputed: " << filename << " and " << filename_ << "\n";
+}
+
 int main(int argc, char **argv) {
     if(argc != 4) {
         std::cerr << "Error requires two arguments.\n" << argv[0] << " binarysource outputfile lang\nlang is either c or cpp\n";
@@ -84,50 +131,7 @@ int main(int argc, char **argv) {
         outputCpp17(filename, file, filen, outfile);
     }
     else {
-        outfile << "#ifndef " << filen << "__H\n";
-        outfile << "#define " << filen << "__H\n\n";
-        if(arg_x == "cpp")
-            outfile << "#ifdef __cplusplus\nextern \"C\" {\n#endif\n\n";
-        outfile << "extern unsigned char " << filen << "[];\n";
-        outfile << "extern unsigned long " << filen << "_length;\n\n";
-        if(arg_x == "cpp")
-            outfile << "#ifdef __cplusplus\n}\n#endif\n";
-        outfile << "\n";
-        outfile << "\n\n#endif\n";
-        std::string filename_;
-        filename_= argv[2];
-        filename_+= ".";
-        filename_+= arg_x;
-        outfile.close();
-        outfile.open(filename_, std::ios::out);
-        if(!outfile.is_open()) {
-            std::cerr << "could not open file: " << filename_ << "\n";
-            exit(0);
-        }
-        outfile << "#include\"" << filename << "\"\n\n";
-        file.seekg(0, std::ios::end);
-        size_t len = file.tellg();
-        file.seekg(0, std::ios::beg);
-        outfile << "\nunsigned long " << filen << "_length = 0x" << std::hex << len << ";\n\n";
-        outfile << "\nunsigned char " << filen << "[] = {\n";
-        unsigned long counter = 0;
-        
-        char buffer[1024];
-        while(!file.eof()) {
-            file.read((char*)buffer, 1024);
-            for(unsigned int i = 0; i < file.gcount(); ++i) {
-                outfile << "0x" << std::hex << (unsigned int)(unsigned char)buffer[i] << ", ";
-                ++counter;
-                if((counter%15) == 0) outfile << "\n";
-                
-            }
-        }
-        file.close();
-        outfile << "0x0" << "};\n\n";
-        outfile.close();
-        std::cout << "Array Variable: " << filen << "\n";
-        std::cout << "Array Length Variable: " << filen << "_length\n";
-        std::cout << "Outputed: " << filename << " and " << filename_ << "\n";
+        outputCpp(filename, file, filen, outfile, arg_x, argv);
     }
     return 0;
 }
