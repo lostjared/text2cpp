@@ -1,4 +1,4 @@
-# bin2cpp
+# bin2cpp / text2cpp
 
 Convert Binary file to C,C++ or Go array to embed resources
 
@@ -19,7 +19,7 @@ $ make
 $ sudo make install
 
 
-to use the bin2cpp  program:
+# to use the bin2cpp  program:
 
 $ bin2cpp sourcefile outputfilename language
 
@@ -30,7 +30,7 @@ The Output filenames will have the source file extension be .c or .cpp, and the 
 file. Or you could use this with SDL_RWops. The program will output the names of the array and a length variable.
 
 
-To use the text2cpp:
+# To use the text2cpp:
 
 Simple program that outputs header files using C++17's inline variables to use:
 
