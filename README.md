@@ -36,10 +36,10 @@ Simple program that outputs header files using C++17's inline variables to use:
 
 to use const char *:
 
-$ text2cpp inputfile outputfile variable_name c
+$ text2cpp inputfile outputfile variable_name s
 to use std::string:
 
-$ text2cpp inputfile outputfile variable_name s
+$ text2cpp inputfile outputfile variable_name c
 to use a character array char arr[]
 
 $ text2cpp inputfile outputfile variable_name b
