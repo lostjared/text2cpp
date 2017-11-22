@@ -36,36 +36,46 @@ Simple program that outputs header files using C++17's inline variables to use:
 
 to use const char *:
 
-$ text2cpp inputfile outputfile variable_name s
+$ text2cpp inputfile outputfile variable_name c
+
 to use std::string:
 
-$ text2cpp inputfile outputfile variable_name c
+$ text2cpp inputfile outputfile variable_name s
+
 to use a character array char arr[]
 
 $ text2cpp inputfile outputfile variable_name b
+
 or
 
 $ cat sourcefile  | text2cpp variable_name s
+
 or
 
 $ cat sourcefile  | text2cpp variable_name c
+
 or
 
 $ cat sourcefile | text2cpp variable_name b
+
 optional skip blank lines with p argument
 
 $ text2cpp inputfile outputfile varaiblename sp
+
 or skip lines with char array[]:
 
 $ cat source | text2cpp var_name bp
+
 optional sorting use g for greater than, l for less than like this
 
 for greater than sorting use
 
 $ text2cpp inputfile outputfile variable_name sg
+
 or less than sorting use
 
 $ text2cpp inputfile outputfile variablename sl
+
 also works with pipes
 
-$ cat sourcefile | text2cpp variable_name cl
+$  cat sourcefile | text2cpp variable_name cl
