@@ -3,6 +3,12 @@
 #include<fstream>
 #include<cctype>
 
+#if defined(_MSC_VER)
+#include <BaseTsd.h>
+typedef SSIZE_T ssize_t;
+#endif
+
+
 std::string convertFilename(const std::string &input) {
     std::string fpath=input;
     ssize_t pos = fpath.rfind("/");
