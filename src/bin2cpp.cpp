@@ -73,7 +73,7 @@ void outputCpp17(std::string &filename, std::fstream &file, std::string &filen, 
         do{
             outfile << ",0";
         }while( ++ bytes_group_counter != 8);
-        outfile << "),";
+        outfile << ")";
     }
     
 
@@ -177,7 +177,7 @@ void outputCpp(std::string &filename, std::fstream &file, std::string &filen, st
         do{
             outfile << ",0";
         }while( ++ bytes_group_counter != 8);
-        outfile << "),";
+        outfile << ")";
     }
 
 
