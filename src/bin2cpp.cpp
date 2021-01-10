@@ -33,7 +33,7 @@ void outputCpp17(std::string &filename, std::fstream &file, std::string &filen, 
     outfile << "#define " << filen << "__H\n\n";
 
     outfile << R"STR(
-    #define BYTES(a,b,c,d,e,f,g,h) 0x##a,0x##b,0x##C,0x##d,0x##e,0x##f,0x##g,0x##h,
+    #define BYTES(a,b,c,d,e,f,g,h) 0x##a,0x##b,0x##c,0x##d,0x##e,0x##f,0x##g,0x##h,
     )STR";
 
     file.seekg(0, std::ios::end);
@@ -142,7 +142,7 @@ void outputCpp(std::string &filename, std::fstream &file, std::string &filen, st
     file.seekg(0, std::ios::beg);
 
     outfile << R"STR(
-    #define BYTES(a,b,c,d,e,f,g,h) 0x##a,0x##b,0x##C,0x##d,0x##e,0x##f,0x##g,0x##h,
+    #define BYTES(a,b,c,d,e,f,g,h) 0x##a,0x##b,0x##c,0x##d,0x##e,0x##f,0x##g,0x##h,
     )STR";
 
     outfile << "\nunsigned long " << filen << "_length = 0x" << std::hex << len << ";\n\n";
