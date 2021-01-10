@@ -31,22 +31,52 @@ std::string convertFilename(const std::string &input) {
 void outputCpp17(std::string &filename, std::fstream &file, std::string &filen, std::fstream &outfile) {
     outfile << "#ifndef " << filen << "__H\n";
     outfile << "#define " << filen << "__H\n\n";
+
+    outfile << R"STR(
+    #define BYTES(a,b,c,d,e,f,g,h) 0x##a,0x##b,0x##C,0x##d,0x##e,0x##f,0x##g,
+    )STR";
+
     file.seekg(0, std::ios::end);
     size_t len = file.tellg();
     file.seekg(0, std::ios::beg);
     outfile << "\ninline unsigned long " << filen << "_length = 0x" << std::hex << len << ";\n\n";
     outfile << "\ninline unsigned char " << filen << "[] = {\n";
     unsigned long counter = 0;
+
+    unsigned int bytes_group_counter = 0;
+
     char buffer[1024];
     while(!file.eof()) {
         file.read((char*)buffer, 1024);
         for(unsigned int i = 0; i < file.gcount(); ++i) {
-            outfile << "0x" << std::hex << (unsigned int)(unsigned char)buffer[i] << ", ";
+
+            if(bytes_group_counter == 0){
+                outfile << "BYTES(";
+            }
+            else{
+                outfile << ",";
+            }
+            outfile << std::hex << (unsigned int)(unsigned char)buffer[i];
+
+            if( ++ bytes_group_counter == 8){
+                outfile << ")";
+                bytes_group_counter = 0;
+            }
+
             ++counter;
             if((counter%15) == 0) outfile << "\n";
             
         }
     }
+
+    if(bytes_group_counter != 8){
+        do{
+            outfile << ",0";
+        }while( ++ bytes_group_counter != 8);
+        outfile << "),";
+    }
+    
+
     file.close();
     outfile << "0x0" << "};\n\n";
     outfile << "\n\n#endif\n";
@@ -110,20 +140,47 @@ void outputCpp(std::string &filename, std::fstream &file, std::string &filen, st
     file.seekg(0, std::ios::end);
     size_t len = file.tellg();
     file.seekg(0, std::ios::beg);
+
+    outfile << R"STR(
+    #define BYTES(a,b,c,d,e,f,g,h) 0x##a,0x##b,0x##C,0x##d,0x##e,0x##f,0x##g,
+    )STR";
+
     outfile << "\nunsigned long " << filen << "_length = 0x" << std::hex << len << ";\n\n";
     outfile << "\nunsigned char " << filen << "[] = {\n";
     unsigned long counter = 0;
-    
+    unsigned long bytes_group_counter = 0;
     char buffer[1024];
     while(!file.eof()) {
         file.read((char*)buffer, 1024);
         for(unsigned int i = 0; i < file.gcount(); ++i) {
-            outfile << "0x" << std::hex << (unsigned int)(unsigned char)buffer[i] << ", ";
+            
+             if(bytes_group_counter == 0){
+                outfile << "BYTES(";
+            }
+            else{
+                outfile << ",";
+            }
+            outfile << std::hex << (unsigned int)(unsigned char)buffer[i];
+
+            if( ++ bytes_group_counter == 8){
+                outfile << ")";
+                bytes_group_counter = 0;
+            }
+
             ++counter;
             if((counter%15) == 0) outfile << "\n";
             
         }
     }
+
+    if(bytes_group_counter != 0){
+        do{
+            outfile << ",0";
+        }while( ++ bytes_group_counter != 8);
+        outfile << "),";
+    }
+
+
     file.close();
     outfile << "0x0" << "};\n\n";
     outfile.close();
